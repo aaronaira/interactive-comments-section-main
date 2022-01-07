@@ -1,0 +1,15 @@
+:root {
+    --Light-grayish-blue: hsl(239, 57%, 85%);
+    --Moderate-blue: hsl(238, 40%, 52%);
+    --Light-gray: hsl(223, 19%, 93%);
+    --Light-grayish-blue: hsl(239, 57%, 85%);
+    --Grayish-Blue: hsl(211, 10%, 45%);
+}
+body {
+    background-color: var(--Light-grayish-blue) !important;
+    font-family: "Rubik", sans-serif !important;
+}
+p {
+    font-size: 16px !important;
+    color: var(--Grayish-Blue)
+}
