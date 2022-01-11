@@ -4,12 +4,61 @@
     --Light-gray: hsl(223, 19%, 93%);
     --Light-grayish-blue: hsl(239, 57%, 85%);
     --Grayish-Blue: hsl(211, 10%, 45%);
+    --Dark-blue: hsl(212, 24%, 26%);
+    --Grayish-Blue: hsl(211, 10%, 45%);
+    --Light-gray: hsl(223, 19%, 93%);
+    --Very-light-gray: hsl(228, 33%, 97%);
 }
 body {
-    background-color: var(--Light-grayish-blue) !important;
-    font-family: "Rubik", sans-serif !important;
+    background-color: var(--Very-light-gray);
+    font-family: "Rubik", sans-serif;
 }
 p {
-    font-size: 16px !important;
+    font-size: 1rem;
+    color: var(--Grayish-Blue);
+    font-family: "Rubik", sans-serif;
+}
+.card-header img {
+    width: 15%;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: .35rem;
+}
+.card-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 75%;
+    justify-content: space-between;
+}
+.card-user {
+    font-weight: 700;
+    font-family: "Rubik", sans-serif;
+}
+.card-date {
     color: var(--Grayish-Blue)
+}
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--Moderate-blue);
+    font-weight: 700;
+}
+.card-score {
+    background-color: var(--Very-light-gray);
+    padding: .75rem 1rem;
+    border-radius: .65rem;
+    align-items: center;
+    display: flex;
+    width: 25%;
+    justify-content: space-between;   
+}
+.plus {
+    padding: .25rem;
 }
