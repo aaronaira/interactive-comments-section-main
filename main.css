@@ -5,7 +5,6 @@
     --Light-grayish-blue: hsl(239, 57%, 85%);
     --Grayish-Blue: hsl(211, 10%, 45%);
     --Dark-blue: hsl(212, 24%, 26%);
-    --Grayish-Blue: hsl(211, 10%, 45%);
     --Light-gray: hsl(223, 19%, 93%);
     --Very-light-gray: hsl(228, 33%, 97%);
 }
@@ -15,6 +14,7 @@ body {
 }
 p {
     font-size: 1rem;
+    padding:1rem;
     color: var(--Grayish-Blue);
     font-family: "Rubik", sans-serif;
 }
@@ -25,14 +25,25 @@ p {
     display: flex;
     flex-direction: column;
     background-color: white;
-    margin-top: 1rem;
-    padding: 1rem;
+    margin:1rem 1rem;
     border-radius: .35rem;
+}
+.reply {
+    border-left: 3px solid var(--Light-gray) ;
+    background-color: var(--Very-light-gray);
+    
+    
+}
+.reply .card {
+    margin-left: 1rem;
+    margin-right:0;
+    padding: 1rem;
 }
 .card-header {
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding:1rem;
     width: 75%;
     justify-content: space-between;
 }
@@ -43,12 +54,14 @@ p {
 .card-date {
     color: var(--Grayish-Blue)
 }
+
 .card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: var(--Moderate-blue);
     font-weight: 700;
+    padding:1rem;
 }
 .card-score {
     background-color: var(--Very-light-gray);
@@ -60,5 +73,11 @@ p {
     justify-content: space-between;   
 }
 .plus {
-    padding: .25rem;
+    padding: .35rem;
+    cursor: pointer;
+}
+.minus {
+    padding: .35rem;
+    cursor: pointer;
+
 }
