@@ -20,7 +20,7 @@ const card = `
 </div>`
 
 const reply_card = `
-<div class="reply">
+<div id="$nid" class="reply">
   <div id="$uid" class="card">
   <div class="card-header d-flex align-items-center justify-content-between">
     <img src="$uimg" width="50px">
@@ -44,11 +44,8 @@ const reply_card = `
 
 const storage = window.localStorage
 
-
-
-
 const fetchData = async () => {
-  const response = await fetch("data.json")
+  const response = await fetch("./data.json")
   const data = await response.json();
   return [data][0];
 }
@@ -91,7 +88,7 @@ const renderComments = async  () => {
       
       data.replies.map((reply, ir)=> {
 
-        let reply_card_content = reply_card.replace("$uid", "r"+reply.id).replace("$uname",reply.user["username"])
+        let reply_card_content = reply_card.replace("$nid", "n"+i).replace("$uid", "r"+ir).replace("$uname",reply.user["username"])
         .replace("$uimg",reply.user["image"]["webp"]).replace("$udate", reply.createdAt)
         .replace("$ucontent",reply.content).replace("$uscore",reply.score)
         document.querySelector("#u"+i).innerHTML += reply_card_content
@@ -113,48 +110,76 @@ const loadScore = async (id) => {
   return getScore;
 }
 
-const updateScore = async (id, vote, type)=> { 
-  
+const updateScore = async (id, vote, type, user)=> { 
+
   let comments = await getData("comments")
   let updateScoreComment = comments
 
   let updateScoreReply = comments
   
-  if (type) {
+  if (type=="comment") {
 
     vote == "plus" ? updateScoreComment[id]["score"]++ :
     updateScoreComment[id]["score"]--
-    updateStorage(updateScoreComment)
 
-  } else {
+    updateStorage(updateScoreComment)
+    return updateScoreComment[id]["score"]
+
+  } else if(type=="reply") {
+
+    vote == "plus" ? updateScoreReply[user]["replies"][id]["score"]++ :
+    updateScoreReply[user]["replies"][id]["score"]--
     
-    vote == "plus" ? updateScoreReply[id]["replies"][id]["score"]++ :
-    updateScoreReply[id]["score"]--
     updateStorage(updateScoreReply)
+    return updateScoreReply[user]["replies"][id]["score"]
 
   }
  
 }
 
-const getLikes =   () => {
+const getLikes = () => {
   let cardSelection =  document.querySelectorAll("div.card")
-    cardSelection.forEach(el => {
-      el.addEventListener("click", async (e)=>{
-        
-        await updateScore(e.currentTarget.id[1], e.target.className)
-        console.log(e.target)
-        e.currentTarget.querySelector(".card-score span").innerHTML = await loadScore(e.currentTarget.id[1]);
-    });
+  cardSelection.forEach(el  => {
+
+  if(el.id.includes("u")){
+    el.querySelector(`#${el.id} .plus`).addEventListener("click",async (e) => {
+      
+      el.querySelector(`#${el.id} .card-score > span`).innerHTML = await updateScore(el.id[1], e.target.className, "comment", null);
+
+    })
+    el.querySelector(`#${el.id} .minus`).addEventListener("click",async (e) => {
+      
+      el.querySelector(`#${el.id} .card-score > span`).innerHTML = await updateScore(el.id[1], e.target.className, "comment", null);
+
+    })
+  }
+
+
   })
+  //   cardSelection.forEach(el => {
+  //     console.log(el.id)
+  //     el.addEventListener("click", async (e)=>{
+  //       if(e.target.querySelector(".plus") || e.target.querySelector(".minus")) {
+  //         e.currentTarget.querySelector(".card-score > span").innerHTML = 25  /*await updateScore(e.currentTarget.id[1], e.target.className, "comment", null);*/
+  //       }
+  //   });
+  // })
 }
 const getReplyLikes = () => {
   let cardReplySelection = document.querySelectorAll("div.reply")
   cardReplySelection.forEach(el => {
-    el.addEventListener("click", (e) => {
-      console.log(e.currentTarget)
+    el.addEventListener("click",async (e) => {
+      let user_reply = e.currentTarget.id[1]
+      let user_id = e.currentTarget.querySelector(".card").id[1]
+      let signal = e.target.className
+      if(e.currentTarget.querySelector("div.reply > .card-score .plus") || e.currentTarget.querySelector("div.reply > .card-score .minus") ) {
+        e.currentTarget.querySelector(".reply .card-score span").innerHTML = await updateScore(user_id, signal, "reply", user_reply)
+        
+      }
     })
   })
 }
+
 /*
 * Render items
 */
