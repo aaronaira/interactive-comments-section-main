@@ -7,6 +7,8 @@
     --Dark-blue: hsl(212, 24%, 26%);
     --Light-gray: hsl(223, 19%, 93%);
     --Very-light-gray: hsl(228, 33%, 97%);
+    --Pale-red: hsl(357, 100%, 86%);
+    --Soft-red: hsl(358, 79%, 66%);
 }
 body {
     background-color: var(--Very-light-gray);
@@ -80,4 +82,30 @@ p {
     padding: .35rem;
     cursor: pointer;
 
+}
+.reply .card-header {
+    width: 90%;
+}
+.reply_to {
+    color: var(--Moderate-blue);
+    font-weight: 700;
+}
+.self_user {
+    margin: 0 1rem;
+    background-color: var(--Moderate-blue);
+    padding: .25rem .55rem;
+    border-radius: 5px;
+    color: white;
+}
+span.delete {
+    color: var(--Soft-red);
+    
+}
+.card-reply {
+
+    display:flex;
+    justify-content: space-between;
+}
+.card-reply img {
+    margin: 0 .55rem;
 }
