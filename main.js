@@ -42,6 +42,16 @@ const reply_card = `
   </div>
 </div>`
 
+const reply_input = `
+<div class="reply_card card">
+<div class="reply-inputarea">
+  <img src="http://127.0.0.1:5500/images/avatars/image-juliusomo.webp" alt="">
+  <textarea name="reply_c" class="textarea_replycomment" id="reply_comment"></textarea>
+  <span class="reply-btn">REPLY</span>
+</div>
+</div>
+`
+
 const storage = window.localStorage
 
 const fetchData = async () => {
@@ -55,24 +65,18 @@ const getCurrentUser = async () => {
 
   return getUser["username"];
 }
-const deleteComment = () => {
+const replyComment = () => {
+  let cards = document.querySelectorAll(".card")
 
-  let replyCard = document.querySelector(".reply .").addEventListener("click", e => {
-    console.log(e.currentTarget)
-    
-  })
-
-
-
-}
-
-const handleEvents = () => {
-  let getCards = document.querySelectorAll(".card")
-  
-  getCards.forEach(el => {
-    if(!null){
-      console.log(el.querySelector(".reply").className)
-    }
+  cards.forEach(el => {
+    el.querySelector(".card-reply").addEventListener("click", e => {
+      console.log(el.id)
+      if (document.querySelector(`div#${el.id}`).nextElementSibling.className.includes("reply")) {
+        document.querySelector(`div#${el.id}`).nextElementSibling.remove()
+      } else {
+        document.getElementById(el.id).insertAdjacentHTML('afterend', reply_input)
+      }
+    })
   })
 }
 
@@ -97,7 +101,6 @@ const getData = async (type_data) => {
 const renderComments = async () => {
 
   let data_ = await getData("comments")
-  console.log(getCurrentUser())
 
   await data_.map((data, i) => {
 
@@ -108,8 +111,7 @@ const renderComments = async () => {
     document.querySelector("div.container-fluid").innerHTML += card_content;
 
     // if comment has replies, then map the replies tho
-    console.log(data.replies)
-
+  
     if (data.replies.length > 0) {
 
       data.replies.map(async (reply, ir) => {
@@ -200,7 +202,8 @@ const render = async () => {
   await renderComments();
   getLikes();
   getReplyLikes();
-  handleEvents();
+  replyComment();
+  
 }
 
 

@@ -10,6 +10,7 @@
     --Pale-red: hsl(357, 100%, 86%);
     --Soft-red: hsl(358, 79%, 66%);
 }
+
 body {
     background-color: var(--Very-light-gray);
     font-family: "Rubik", sans-serif;
@@ -108,4 +109,30 @@ span.delete {
 }
 .card-reply img {
     margin: 0 .55rem;
+}
+.reply-inputarea {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem;
+}
+.textarea_replycomment {
+    width: 75%;
+    resize: none;
+    height: 5rem;
+    border-radius: .35rem;
+    padding: .5rem;
+}
+
+.reply-btn {    
+    background-color: var(--Moderate-blue);
+    padding: .65rem .75rem;
+    border-radius: 5px;
+    color: white;
+    height: 1rem;
+}
+
+.reply-inputarea img {
+    width: 5%;
+    height: 5%;
 }
