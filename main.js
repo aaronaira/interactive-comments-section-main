@@ -63,23 +63,30 @@ const fetchData = async () => {
 const getCurrentUser = async () => {
   let getUser = await getData("currentUser")
 
-  return getUser["username"];
+  return getUser;
 }
-const replyComment = () => {
+
+const getReplyComment = () => {
   let cards = document.querySelectorAll(".card")
 
   cards.forEach(el => {
     el.querySelector(".card-reply").addEventListener("click", e => {
-      console.log(el.id)
-      if (document.querySelector(`div#${el.id}`).nextElementSibling.className.includes("reply")) {
-        document.querySelector(`div#${el.id}`).nextElementSibling.remove()
+
+      if(document.querySelector(`div#${el.id} + .reply_card`)) {
+        document.querySelector(`div#${el.id} + .reply_card`).remove();
+        // document.querySelector(`div#${el.id}`).insertAdjacentHTML('afterend', reply_input)
       } else {
-        document.getElementById(el.id).insertAdjacentHTML('afterend', reply_input)
+        document.querySelector(`div#${el.id}`).insertAdjacentHTML('afterend', reply_input);
+        document.querySelector(".reply-btn").addEventListener("click", e=> {
+          let comment = document.querySelector("#reply_comment").value
+          console.log(saveComment(el.id[1], comment))
+        })
+
       }
+      
     })
   })
 }
-
 
 const getData = async (type_data) => {
   let data;
@@ -131,6 +138,17 @@ const renderComments = async () => {
     }
   })
 }
+
+const saveComment = async (id, comment) => {
+  let data = await getData("comments")
+  let currentUser = await getCurrentUser()
+
+  console.log(id, comment)
+  console.log(data[id]["replies"].push({'id': 0, 'comment': 'asdasdasd'}))
+  console.log(data[id].replies)
+  console.log(currentUser)
+}
+
 
 const updateStorage = (data) => {
   storage.setItem('comments', JSON.stringify(data))
@@ -202,7 +220,7 @@ const render = async () => {
   await renderComments();
   getLikes();
   getReplyLikes();
-  replyComment();
+  getReplyComment();
   
 }
 
