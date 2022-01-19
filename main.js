@@ -79,7 +79,8 @@ const getReplyComment = () => {
         document.querySelector(`div#${el.id}`).insertAdjacentHTML('afterend', reply_input);
         document.querySelector(".reply-btn").addEventListener("click", e=> {
           let comment = document.querySelector("#reply_comment").value
-          console.log(saveComment(el.id[1], comment))
+          let commentTo = document.querySelector(`div#${el.id} .card-user`).textContent
+          saveComment(el.id[1], comment, commentTo)
         })
 
       }
@@ -106,8 +107,8 @@ const getData = async (type_data) => {
 }
 
 const renderComments = async () => {
-
-  let data_ = await getData("comments")
+  
+  data_ = await getData("comments")
 
   await data_.map((data, i) => {
 
@@ -124,10 +125,10 @@ const renderComments = async () => {
       data.replies.map(async (reply, ir) => {
         let currentUser = await getCurrentUser();
 
-        let check_user_reply = reply.user["username"] == currentUser ? `${currentUser}<span class="self_user">you</span>` :
+        let check_user_reply = reply.user["username"] == currentUser.username ? `${currentUser.username}<span class="self_user">you</span>` :
           reply.user["username"]
         
-        let edit_user_comment = reply.user["username"] == currentUser ? `<div class="delete-reply"><img src="/images/icon-delete.svg"><span class="delete">Delete</span></div> <div class="edit-reply"><img src="/images/icon-edit.svg"><span>Edit</span></div>` : `<img src="/images/icon-reply.svg"> <span>Reply</span>`
+        let edit_user_comment = reply.user["username"] == currentUser.username ? `<div class="delete-reply"><img src="/images/icon-delete.svg"><span class="delete">Delete</span></div> <div class="edit-reply"><img src="/images/icon-edit.svg"><span>Edit</span></div>` : `<img src="/images/icon-reply.svg"> <span>Reply</span>`
 
         let reply_card_content = reply_card.replace("$nid", "n" + i).replace("$uid", "r" + ir).replace("$uname", check_user_reply)
           .replace("$uimg", reply.user["image"]["webp"]).replace("$udate", reply.createdAt)
@@ -139,19 +140,40 @@ const renderComments = async () => {
   })
 }
 
-const saveComment = async (id, comment) => {
+const saveComment = async (id, comment, replyingTo) => {
   let data = await getData("comments")
   let currentUser = await getCurrentUser()
+  let lastUserReplyId = data[id]["replies"].length
+  let createdAt = moment().startOf(Date.now()).fromNow()
 
   console.log(id, comment)
-  console.log(data[id]["replies"].push({'id': 0, 'comment': 'asdasdasd'}))
-  console.log(data[id].replies)
-  console.log(currentUser)
+
+  console.log('id usuario => ', data)
+  data[id]["replies"].push({
+    id: lastUserReplyId+1,
+    content: comment,
+    createdAt,
+    replyingTo,
+    score: 0,
+    user: {
+      image: {
+        png: currentUser.image["png"],
+        webp: currentUser.image["webp"]
+      },
+      username: currentUser.username
+    }
+  })
+  
+  updateStorage(data)
+ 
+  
+  
 }
 
 
 const updateStorage = (data) => {
   storage.setItem('comments', JSON.stringify(data))
+ 
 
 }
 
